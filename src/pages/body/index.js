@@ -1,10 +1,13 @@
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { convertToTitleCase } from "../../helpers";
+import { ViewTask } from "../../components/viewTask";
+import { useRef } from "react";
 
 export const Body = () => {
 	const { data } = useSelector((store) => store.body);
 	const location = useLocation();
+	const popupRef = useRef();
 
 	const showData = data?.boards?.filter((board) => {
 		if (convertToTitleCase(location?.pathname) === board?.name) {
@@ -21,6 +24,7 @@ export const Body = () => {
 				!!showData ? "overflow-auto" : "overflow-hidden"
 			} z-0`}
 		>
+			<ViewTask ref={popupRef} />
 			{!!showData ? (
 				<div className="flex justify-start items-start p-[40px] gap-[40px] w-[calc(100vw-190px)]">
 					{showData?.map((list, index) => {
@@ -45,6 +49,7 @@ export const Body = () => {
 									})?.length;
 									return (
 										<div
+											onClick={() => popupRef?.current?.open(task)}
 											key={ind}
 											className="w-[280px] bg-aside px-[16px] py-[18px] rounded-[8px] flex flex-col gap-1 shadow-xl"
 										>

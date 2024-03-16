@@ -66,7 +66,6 @@ export const AddBoard = ({ show, setShow }) => {
 															onChange={(e) => setCollect({...collect, columns: collect?.columns?.map((s, i) => {
                                                                 return index === i ? {tasks: [], name: e.target.value} : s;
                                                             })})}
-															type="button"
                                                             required
 															className="bg-transparent border border-[#828FA3] px-3 text-primary rounded-[4px] w-full h-[40px]"
 														/>

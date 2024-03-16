@@ -6,14 +6,12 @@ import { useState } from "react";
 import { AddTask } from "../addTask";
 import ellipse from "../../assets/icon-vertical-ellipsis.svg";
 import { DeleteBoard } from "../deleteBoard";
-import { AddBoard } from "../addBoard";
 
 export const Navbar = ({color}) => {
     const location = useLocation();
     const [show, setShow] = useState(false);
     const [open, setOpen] = useState(false);
     const [del, setDel] = useState(false);
-    const [edit, setEdit] = useState(false);
 
     return (
         <div className="flex justify-between items-center bg-aside h-[97px] z-50 w-full">
@@ -48,7 +46,7 @@ export const Navbar = ({color}) => {
                 </button>
                 {open && <div className="absolute top-16 bg-aside w-[192px] h-[94px] shadow-lg rounded-[8px] flex flex-col justify-between p-[16px]">
                     <button 
-                    onClick={() => setEdit(false)}
+                    onClick={() => {}}
                     className="text-second text-start">Edit Board</button>
                     <button 
                     onClick={() => setDel(true)}

@@ -9,6 +9,8 @@ export const Body = () => {
 	const showData = data?.boards?.filter((board) => {
 		if (convertToTitleCase(location?.pathname) === board?.name) {
 			return true;
+		} else {
+			return false;
 		}
 	})?.[0]?.columns;
 	const color = ["bg-[#49C4E5]", "bg-[#8471F2]", "bg-[#67E2AE]"];

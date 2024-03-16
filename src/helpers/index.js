@@ -46,4 +46,5 @@ export const setTheme = (color) => {
 			color ? colorWhite?.[item] : colorBlack?.[item]
 		);
 	});
+	return;
 };

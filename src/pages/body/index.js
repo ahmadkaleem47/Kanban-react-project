@@ -49,7 +49,7 @@ export const Body = () => {
 									})?.length;
 									return (
 										<div
-											onClick={() => popupRef?.current?.open(task)}
+											onClick={() => popupRef?.current?.open(task, complete)}
 											key={ind}
 											className="w-[280px] bg-aside px-[16px] py-[18px] rounded-[8px] flex flex-col gap-1 shadow-xl"
 										>

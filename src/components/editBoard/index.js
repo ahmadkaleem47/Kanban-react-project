@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import iconCross from "../../assets/icon-cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setEditBoard } from "../../redux/bodySlice.ts";
@@ -10,12 +10,15 @@ export const EditBoard = ({ show, setShow }) => {
     const dispatch = useDispatch();
     const {data} = useSelector((store) => store.body);
     const location = useLocation();
+    const [collect, setCollect] = useState({});
     
     const showData = data?.boards?.filter((board) => {
         return board?.name === convertToTitleCase(location?.pathname);
     })?.[0];
 
-    const [collect, setCollect] = useState(showData);
+    useEffect(() => {
+        setCollect(showData)
+    }, [showData])
 
     const handleSubmit = (e) => {
         e.preventDefault();

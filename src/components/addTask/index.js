@@ -18,7 +18,7 @@ export const AddTask = ({ show, setShow }) => {
 			return stat?.name;
 		});
 
-    const [collect, setCollect] = useState({subtasks: [{}, {}], status: !!status ? status[0]: null});
+    const [collect, setCollect] = useState({subtasks: [{}, {}]});
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -125,6 +125,7 @@ export const AddTask = ({ show, setShow }) => {
                                                 required
 												className="bg-transparent px-3 text-primary border border-[#828FA3] rounded-[4px] h-[40px] w-full"
 											>
+												<option className="bg-aside px-3 text-primary border border-[#828FA3] h-[40px] w-full" value={''}></option>;
 												{status?.map((st) => {
 													return <option className="bg-aside px-3 text-primary border border-[#828FA3] h-[40px] w-full" value={st}>{st}</option>;
 												})}

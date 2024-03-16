@@ -6,15 +6,17 @@ import { setIsCompleted, setStatusChange } from "../../redux/bodySlice.ts";
 import { convertToTitleCase } from "../../helpers/index.js";
 import { useLocation } from "react-router-dom/dist/index";
 import { useSelector } from "react-redux";
+import { DeleteBoard } from "../deleteBoard/index.js";
 
 export const ViewTask = forwardRef((props, ref) => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const { data } = useSelector((store) => store?.body);
 	const [display, setDisplay] = useState();
-    const [complete, setComplete] = useState(0);
+	const [complete, setComplete] = useState(0);
 	const [show, setShow] = useState(false);
-    const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(false);
+	const [del, setDel] = useState(false);
 
 	const status = data?.boards
 		?.filter((board) => {
@@ -28,12 +30,13 @@ export const ViewTask = forwardRef((props, ref) => {
 		open(dat, comp) {
 			setShow(true);
 			setDisplay(dat);
-            setComplete(comp);
+			setComplete(comp);
 		},
 	}));
 
 	return (
 		<>
+			<DeleteBoard show={del} setShow={setDel} data={display} />
 			<Transition className="z-50" appear show={show} as={Fragment}>
 				<Dialog
 					as="div"
@@ -55,19 +58,29 @@ export const ViewTask = forwardRef((props, ref) => {
 									<div className="flex flex-col justify-start gap-[20px] w-[480px] p-[24px]">
 										<h1 className="relative text-primary text-[18px] font-[700] flex justify-between items-center">
 											{display?.title}
-                <button onClick={() => setOpen(true)}>
-                    <img
-                        src={ellipse}
-                        alt="logo"
-                        className="object-contain w-[5px] h-[20px]"
-                    />
-                </button>
-                {open && <div className="absolute top-7 -right-5 bg-aside w-[192px] h-[94px] shadow-lg rounded-[8px] flex flex-col justify-between p-[16px]">
-                    <button 
-                    className="text-second text-[16px] font-[500] text-start">Edit Task</button>
-                    <button 
-                    className="text-delete text-[16px] font-[500] text-start">Delete Task</button>
-                </div>}
+											<button onClick={() => setOpen(true)}>
+												<img
+													src={ellipse}
+													alt="logo"
+													className="object-contain w-[5px] h-[20px]"
+												/>
+											</button>
+											{open && (
+												<div className="absolute top-7 -right-5 bg-aside w-[192px] h-[94px] shadow-lg rounded-[8px] flex flex-col justify-between p-[16px]">
+													<button className="text-second text-[16px] font-[500] text-start">
+														Edit Task
+													</button>
+													<button 
+                                                    onClick={() => {
+                                                        setDel(true)
+                                                        setOpen(false);
+                                                        setShow(false)
+                                                        }}
+                                                    className="text-delete text-[16px] font-[500] text-start">
+														Delete Task
+													</button>
+												</div>
+											)}
 										</h1>
 										<div className="text-modal font-[400] text-[14px]">
 											{display?.description}
@@ -138,11 +151,16 @@ export const ViewTask = forwardRef((props, ref) => {
 												value={display?.status || ""}
 												onChange={(e) => {
 													setDisplay({ ...display, status: e.target.value });
-													dispatch(setStatusChange({
-														data: { ...display, status: e.target.value },
-														title: convertToTitleCase(location?.pathname),
-														old: display?.status === '' ? status[0]:display?.status,
-													}));
+													dispatch(
+														setStatusChange({
+															data: { ...display, status: e.target.value },
+															title: convertToTitleCase(location?.pathname),
+															old:
+																display?.status === ""
+																	? status[0]
+																	: display?.status,
+														})
+													);
 												}}
 												className="bg-transparent px-3 text-primary border border-[#828FA3] rounded-[4px] h-[40px] w-full"
 											>

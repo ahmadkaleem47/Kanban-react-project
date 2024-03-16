@@ -2,10 +2,10 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { setDeleteBoard } from "../../redux/bodySlice.ts";
+import { setDeleteBoard, setDeleteTask } from "../../redux/bodySlice.ts";
 import { convertToTitleCase } from "../../helpers";
 
-export const DeleteBoard = ({ show, setShow }) => {
+export const DeleteBoard = ({ show, setShow, data }) => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 
@@ -31,21 +31,28 @@ export const DeleteBoard = ({ show, setShow }) => {
 								<Dialog.Panel className="object-contain transform overflow-hidden rounded-2xl bg-aside text-left shadow-xl transition-all">
 									<div className="flex flex-col justify-start gap-[20px] w-[480px] p-[24px]">
 										<h1 className="text-delete text-[18px] font-[700]">
-											Delete This Board?
+											Delete This {data ? "Task" : "Board"}?
 										</h1>
 										<div className="text-modal font-[200] text-[14px]">
-											Are you sure you want to delete the {convertToTitleCase(location?.pathname)} board?
-											This action will remove all columns and tasks and cannot
-											be reversed.
+											Are you sure you want to delete the{" "}
+											{data
+												? data?.title
+												: convertToTitleCase(location?.pathname)}{" "}
+											{data ? "task" : "board"}? This action will remove all
+											columns and tasks and cannot be reversed.
 										</div>
 										<div className="flex justify-center items-center gap-10">
 											<button
 												onClick={() => {
-													dispatch(
+													if (data) {
+														dispatch(setDeleteTask({title: convertToTitleCase(location?.pathname), data: data}))
+													} else {
+														dispatch(
 														setDeleteBoard(
 															convertToTitleCase(location?.pathname)
 														)
 													);
+													}
 													setShow(false);
 												}}
 												className="bg-delete w-full h-[40px] rounded-[20px] text-white text-[14px] font-[700]"

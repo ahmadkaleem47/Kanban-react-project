@@ -49,7 +49,7 @@ export const Navbar = ({color}) => {
                     onClick={() => {}}
                     className="text-second text-start">Edit Board</button>
                     <button 
-                    onClick={() => setDel(true)}
+                    onClick={() => {setDel(true); setOpen(false)}}
                     className="text-delete text-start">Delete Board</button>
                 </div>}
             </div>

@@ -1,4 +1,5 @@
 import iconBoard from "../../assets/icon-board.svg";
+import eye from "../../assets/icon-show-sidebar.svg";
 import darkTheme from "../../assets/icon-dark-theme.svg";
 import lightTheme from "../../assets/icon-light-theme.svg";
 import hide from "../../assets/icon-hide-sidebar.svg";
@@ -107,7 +108,7 @@ export const Aside = ({ setVisible, visible, setColor }) => {
 					className={`text-first bg-tab w-[56px] h-[48px] pl-[16px] rounded-full rounded-tl-none rounded-bl-none hover:opacity-50`}
 				>
 					<img
-						src={show}
+						src={eye}
 						alt="cross"
 						className="object-contain w-[16px] h-[10px]"
 					/>

@@ -40,11 +40,12 @@ export const setTheme = (color) => {
         "--text-delete": "#EA5555",
         "--bg-cancel": "#F4F7FD",
 	};
-	Object.keys(color ? colorWhite : colorBlack || {}).map((item) => {
+	const colors = color ? colorWhite : colorBlack;
+	for (const item in colors) {
 		document.documentElement.style.setProperty(
 			item,
 			color ? colorWhite?.[item] : colorBlack?.[item]
 		);
-	});
+	}
 	return;
 };

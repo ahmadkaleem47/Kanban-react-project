@@ -11,7 +11,6 @@ export const Router = () => {
 
 	const routes = [
 		{ path: "/:type?", element: <Body /> },
-		{ path: "/courses/view-all", element: <></> },
 	];
 
 	useEffect(() => setTheme(true), [])

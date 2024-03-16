@@ -1,13 +1,22 @@
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { convertToTitleCase } from "../../helpers";
+import { useLocation, useNavigate } from "react-router-dom";
+import { convertToSlug, convertToTitleCase } from "../../helpers";
 import { ViewTask } from "../../components/viewTask";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { EditBoard } from "../../components/editBoard";
 
 export const Body = () => {
 	const { data } = useSelector((store) => store.body);
+	const [edit, setEdit] = useState(false);
 	const location = useLocation();
+	const navigate = useNavigate();
 	const popupRef = useRef();
+
+	useEffect(() => {
+		if (location?.pathname === '/') {
+			navigate(convertToSlug(data?.boards[0]?.name))
+		}
+	}, [location?.pathname, navigate, data?.boards])
 
 	const showData = data?.boards?.filter((board) => {
 		if (convertToTitleCase(location?.pathname) === board?.name) {
@@ -15,17 +24,18 @@ export const Body = () => {
 		} else {
 			return false;
 		}
-	})?.[0]?.columns;
+	})?.[0]?.columns || [];
 	const color = ["bg-[#49C4E5]", "bg-[#8471F2]", "bg-[#67E2AE]"];
 
 	return (
 		<div
 			className={`bg-body w-full h-[calc(100vh-97px)] ${
-				!!showData ? "overflow-auto" : "overflow-hidden"
+				showData.length !== 0 ? "overflow-auto" : "overflow-hidden"
 			} z-0`}
 		>
 			<ViewTask ref={popupRef} />
-			{!!showData ? (
+			<EditBoard show={edit} setShow={setEdit} />
+			{showData.length !== 0 ? (
 				<div className="flex justify-start items-start p-[40px] gap-[40px] w-[calc(100vw-190px)]">
 					{showData?.map((list, index) => {
 						return (
@@ -66,7 +76,9 @@ export const Body = () => {
 						);
 					})}
 					<button className="flex flex-col justify-center items-center min-w-[280px] bg-dark h-[calc(100vh-200px)] shadow-md mt-9">
-						<p className="text-second text-[24px] font-[600]">+ New Column</p>
+						<p 
+						onClick={() => setEdit(true)}
+						className="text-second text-[24px] font-[600]">+ New Column</p>
 					</button>
 				</div>
 			) : (
@@ -74,7 +86,9 @@ export const Body = () => {
 					<p className="text-center text-second">
 						This board is empty. Create a new column to get started.
 					</p>
-					<button className="rounded-full text-first w-[164px] h-[48px] bg-tab hover:opacity-30">
+					<button 
+					onClick={() => setEdit(true)}
+					className="rounded-full text-first w-[164px] h-[48px] bg-tab hover:opacity-30">
 						+ Add New Column
 					</button>
 				</div>

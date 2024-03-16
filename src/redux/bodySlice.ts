@@ -26,6 +26,11 @@ const bodySlice = createSlice({
         setNewBoard: (state: BodyState, {payload}: PayloadAction<any>) => {
             state.data = {boards: [...state.data?.boards, payload]}
         },
+        setEditBoard: (state: BodyState, {payload}: PayloadAction<any>) => {
+            state.data = {boards: state.data?.boards?.map((board) => {
+                return board?.name === payload?.name ? payload : board;
+            })}
+        },
         setDeleteBoard: (state: BodyState, {payload}: PayloadAction<any>) => {
             state.data = {boards: state.data?.boards?.filter((board) => {
                 return board?.name !== payload;
@@ -34,5 +39,5 @@ const bodySlice = createSlice({
     }
 })
 
-export const {setData, setSubtasks, setNewBoard, setDeleteBoard} = bodySlice.actions;
+export const {setData, setSubtasks, setNewBoard, setDeleteBoard, setEditBoard} = bodySlice.actions;
 export default bodySlice.reducer;

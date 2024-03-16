@@ -6,17 +6,20 @@ import { useState } from "react";
 import { AddTask } from "../addTask";
 import ellipse from "../../assets/icon-vertical-ellipsis.svg";
 import { DeleteBoard } from "../deleteBoard";
+import { EditBoard } from "../editBoard";
 
 export const Navbar = ({color}) => {
     const location = useLocation();
     const [show, setShow] = useState(false);
     const [open, setOpen] = useState(false);
     const [del, setDel] = useState(false);
+    const [edit, setEdit] = useState(false);
 
     return (
         <div className="flex justify-between items-center bg-aside h-[97px] z-50 w-full">
         <AddTask show={show} setShow={setShow} />
         <DeleteBoard show={del} setShow={setDel} />
+        <EditBoard show={edit} setShow={setEdit} />
         <div className="flex justify-center items-center">
         {!color ?
 				<img
@@ -46,7 +49,7 @@ export const Navbar = ({color}) => {
                 </button>
                 {open && <div className="absolute top-16 bg-aside w-[192px] h-[94px] shadow-lg rounded-[8px] flex flex-col justify-between p-[16px]">
                     <button 
-                    onClick={() => {}}
+                    onClick={() => {setEdit(true); setOpen(false)}}
                     className="text-second text-start">Edit Board</button>
                     <button 
                     onClick={() => {setDel(true); setOpen(false)}}

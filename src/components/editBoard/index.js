@@ -1,18 +1,25 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import iconCross from "../../assets/icon-cross.svg";
-import { useDispatch } from "react-redux";
-import { setNewBoard } from "../../redux/bodySlice.ts";
-import { capitalizeWords } from "../../helpers/index.js";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditBoard } from "../../redux/bodySlice.ts";
+import { capitalizeWords, convertToTitleCase } from "../../helpers/index.js";
+import { useLocation } from "react-router-dom";
 
-export const AddBoard = ({ show, setShow }) => {
+export const EditBoard = ({ show, setShow }) => {
     const dispatch = useDispatch();
+    const {data} = useSelector((store) => store.body);
+    const location = useLocation();
+    
+    const showData = data?.boards?.filter((board) => {
+        return board?.name === convertToTitleCase(location?.pathname);
+    })?.[0];
 
-    const [collect, setCollect] = useState({columns: [{}, {}]});
+    const [collect, setCollect] = useState(showData);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(setNewBoard(collect))
+        dispatch(setEditBoard(collect))
         setShow(false);
     }
 
@@ -40,7 +47,7 @@ export const AddBoard = ({ show, setShow }) => {
                                     onSubmit={handleSubmit}
                                     className="flex flex-col justify-start gap-[20px] w-[416px] p-[24px]">
 										<h1 className="text-primary text-[18px] font-[700]">
-											Add New Task
+											Edit Board
 										</h1>
 										<div className="flex flex-col gap-2">
 											<label className="text-modal font-bold text-[12px]">
@@ -50,6 +57,7 @@ export const AddBoard = ({ show, setShow }) => {
 												onChange={(e) =>
 													setCollect({ ...collect, name: capitalizeWords(e.target.value) })
 												}
+                                                value={collect?.name || ''}
                                                 required
 												className="bg-transparent border border-[#828FA3] rounded-[4px] h-[40px] w-full flex px-3 text-primary items-center"
 											/>
@@ -64,13 +72,14 @@ export const AddBoard = ({ show, setShow }) => {
 														{" "}
 														<input
 															onChange={(e) => setCollect({...collect, columns: collect?.columns?.map((s, i) => {
-                                                                return index === i ? {tasks: [], name: e.target.value} : s;
+                                                                return index === i ? {tasks: [...s.tasks || ''], name: e.target.value} : s;
                                                             })})}
-															type="button"
                                                             required
+                                                            value={collect?.columns[index]?.name}
 															className="bg-transparent border border-[#828FA3] px-3 text-primary rounded-[4px] w-full h-[40px]"
 														/>
                                                         <button
+                                                            type="button"
                                                             onClick={() => setCollect({...collect, columns: collect?.columns?.filter((val, ind) => {
                                                                 return ind !== index
                                                             })})}>
@@ -92,7 +101,7 @@ export const AddBoard = ({ show, setShow }) => {
 										<button 
                                         type="submit"
                                         className="bg-tab w-full h-[40px] rounded-[20px] text-white text-[14px] font-[700]">
-											+ Create New Board
+											+ Save Changes
 										</button>
 									</form>
 								</Dialog.Panel>

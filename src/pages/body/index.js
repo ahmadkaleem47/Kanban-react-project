@@ -22,12 +22,12 @@ export const Body = () => {
 			} z-0`}
 		>
 			{!!showData ? (
-				<div className="flex justify-start items-start p-[40px] gap-[40px] w-[calc(100vw-190px)] ">
+				<div className="flex justify-start items-start p-[40px] gap-[40px] w-[calc(100vw-190px)]">
 					{showData?.map((list, index) => {
 						return (
 							<div
 								key={index}
-								className="flex flex-col items-start gap-5 w-[280px]"
+								className="flex flex-col items-start gap-5 min-w-[280px] "
 							>
 								<div className="flex justify-center items-center tracking-[0.12em] h-[15px] gap-3">
 									<div
@@ -60,7 +60,7 @@ export const Body = () => {
 							</div>
 						);
 					})}
-					<button className="flex flex-col justify-center items-center w-[280px] bg-dark h-[calc(100vh-200px)] shadow-md mt-9">
+					<button className="flex flex-col justify-center items-center min-w-[280px] bg-dark h-[calc(100vh-200px)] shadow-md mt-9">
 						<p className="text-second text-[24px] font-[600]">+ New Column</p>
 					</button>
 				</div>

@@ -1,0 +1,73 @@
+:root {
+    --text-first: #fff;
+    --bg-tab: #635FC7;
+    --text-second: #828FA3;
+    --bg-aside: #fff;
+    --bg-body:#F4F7FD;
+    --text-primary: #000;
+    --bg-dark: #E9EFFA;
+    --text-modal: "#828FA3";
+    --bg-modal-btn: "#F4F7FD";
+    --text-delete: "#EA5555";
+    --bg-cancel: "#F4F7FD";
+  }
+
+.text-primary {
+    color: var(--text-primary);
+}
+
+.bg-hover:hover {
+    background-color: var(--text-primary);
+}
+
+.text-hover:hover {
+    color: var(--bg-tab);
+}
+
+.text-modal {
+    color: var(--text-modal);
+}
+
+.text-delete {
+    color: var(--text-delete);
+}
+
+.bg-delete {
+    background-color: var(--text-delete);
+}
+
+.bg-cancel {
+    background-color: var(--bg-cancel);
+}
+
+.bg-modal-button {
+    background-color: var(--bg-modal-btn);
+}
+
+.text-new {
+    color: var(--bg-tab);
+}
+
+  .text-first {
+    color: var(--text-first);
+}
+
+.text-second {
+    color: var(--text-second);
+}
+
+.bg-tab {
+    background-color: var(--bg-tab);
+}
+
+.bg-dark {
+    background-color: var(--bg-dark);
+}
+
+.bg-body {
+    background-color: var(--bg-body);
+}
+
+.bg-aside {
+    background-color: var(--bg-aside);
+}

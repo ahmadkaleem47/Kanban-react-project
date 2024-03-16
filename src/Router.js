@@ -2,7 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { Aside } from "./components/aside";
 import { Navbar } from "./components/navbar";
 import { Body } from "./pages/body";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { setTheme } from "./helpers";
 
 export const Router = () => {
 	const [visible, setVisible] = useState(true);
@@ -12,6 +13,8 @@ export const Router = () => {
 		{ path: "/:type?", element: <Body /> },
 		{ path: "/courses/view-all", element: <></> },
 	];
+
+	useEffect(() => setTheme(true), [])
 
 	return (
 		<>

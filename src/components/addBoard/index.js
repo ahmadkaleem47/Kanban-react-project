@@ -3,7 +3,7 @@ import { Fragment, useState } from "react";
 import iconCross from "../../assets/icon-cross.svg";
 import { useDispatch } from "react-redux";
 import { setNewBoard } from "../../redux/bodySlice.ts";
-import { convertToTitleCase } from "../../helpers/index.js";
+import { capitalizeWords } from "../../helpers/index.js";
 
 export const AddBoard = ({ show, setShow }) => {
     const dispatch = useDispatch();
@@ -48,7 +48,7 @@ export const AddBoard = ({ show, setShow }) => {
 											</label>
 											<input
 												onChange={(e) =>
-													setCollect({ ...collect, name: convertToTitleCase(e.target.value) })
+													setCollect({ ...collect, name: capitalizeWords(e.target.value) })
 												}
                                                 required
 												className="bg-transparent border border-[#828FA3] rounded-[4px] h-[40px] w-full flex px-3 text-primary items-center"

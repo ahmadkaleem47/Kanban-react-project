@@ -12,6 +12,21 @@ export const convertToSlug = (inputString) => {
     return "/"+ inputString?.toLowerCase()?.replace(/\s+/g, '-');
 }
 
+export const capitalizeWords = (inputString) => {
+    // Split the input string into an array of words
+    let words = inputString.split(' ');
+
+    // Iterate through each word and capitalize the first letter
+    for (let i = 0; i < words.length; i++) {
+        words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+    }
+
+    // Join the words back into a single string
+    let capitalizedString = words.join(' ');
+
+    return capitalizedString;
+}
+
 export const setTheme = (color) => {
 	document.documentElement.removeAttribute("style");
 	const colorBlack = {

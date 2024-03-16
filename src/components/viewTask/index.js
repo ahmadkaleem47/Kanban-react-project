@@ -124,7 +124,7 @@ export const ViewTask = forwardRef((props, ref) => {
 													dispatch(setStatusChange({
 														data: { ...display, status: e.target.value },
 														title: convertToTitleCase(location?.pathname),
-														old: display?.status,
+														old: display?.status === '' ? status[0]:display?.status,
 													}));
 												}}
 												className="bg-transparent px-3 text-primary border border-[#828FA3] rounded-[4px] h-[40px] w-full"

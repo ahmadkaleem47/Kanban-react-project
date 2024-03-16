@@ -46,10 +46,9 @@ const bodySlice = createSlice({
             })}
         },
         setStatusChange: (state: BodyState, {payload}: PayloadAction<any>) => {
-            console.log(payload)
             state.data = {boards:state.data?.boards?.map((board) => {
                 return payload?.title === board?.name ? {...board, columns: board?.columns?.map((col) => {
-                    return col?.name === payload?.old ? {...col, tasks: col?.tasks?.filter((task) => {
+                    return col?.name?.toLowerCase() === payload?.old?.toLowerCase() ? {...col, tasks: col?.tasks?.filter((task) => {
                         return task?.title !== payload?.data?.title;
                     })} : col?.name === payload?.data?.status ? {...col, tasks: [...col?.tasks , payload?.data]} : col
                 })} :board;

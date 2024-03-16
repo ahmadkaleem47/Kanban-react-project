@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { Fragment, forwardRef, useImperativeHandle, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setIsCompleted } from "../../redux/bodySlice.ts";
+import { setIsCompleted, setStatusChange } from "../../redux/bodySlice.ts";
 import { convertToTitleCase } from "../../helpers/index.js";
 import { useLocation } from "react-router-dom/dist/index";
 import { useSelector } from "react-redux";
@@ -27,11 +27,6 @@ export const ViewTask = forwardRef((props, ref) => {
 			setDisplay(dat);
 		},
 	}));
-
-    useEffect(() => {
-        console.log(display)
-        dispatch(setIsCompleted({title: convertToTitleCase(location?.pathname), data: display}));
-    }, [display, dispatch, location?.pathname])
 
 	return (
 		<>
@@ -72,13 +67,46 @@ export const ViewTask = forwardRef((props, ref) => {
 																checked={sub?.isCompleted}
 																id="checked-checkbox"
 																type="checkbox"
-                                                                onClick={(e) => setDisplay({...display, subtasks: display?.subtasks?.map((s, i) => {
-                                                                    return index===i ? {...s, isCompleted: (!s?.isCompleted)} : s;
-                                                                })})}
+																onClick={(e) => {
+																	setDisplay({
+																		...display,
+																		subtasks: display?.subtasks?.map((s, i) => {
+																			return index === i
+																				? { ...s, isCompleted: !s?.isCompleted }
+																				: s;
+																		}),
+																	});
+																	dispatch(
+																		setIsCompleted({
+																			title: convertToTitleCase(
+																				location?.pathname
+																			),
+																			data: {
+																				...display,
+																				subtasks: display?.subtasks?.map(
+																					(s, i) => {
+																						return index === i
+																							? {
+																									...s,
+																									isCompleted: !s?.isCompleted,
+																							  }
+																							: s;
+																					}
+																				),
+																			},
+																		})
+																	);
+																}}
 																className="w-4 h-4 bg-tab rounded focus:ring-2"
 															/>
 														</div>
-														<div className={`text-[12px] font-[700] ${sub?.isCompleted ? "line-through text-second": "text-primary"}`}>
+														<div
+															className={`text-[12px] font-[700] ${
+																sub?.isCompleted
+																	? "line-through text-second"
+																	: "text-primary"
+															}`}
+														>
 															{sub?.title}
 														</div>
 													</div>
@@ -90,7 +118,15 @@ export const ViewTask = forwardRef((props, ref) => {
 												Status
 											</label>
 											<select
-												required
+												value={display?.status || ""}
+												onChange={(e) => {
+													setDisplay({ ...display, status: e.target.value });
+													dispatch(setStatusChange({
+														data: { ...display, status: e.target.value },
+														title: convertToTitleCase(location?.pathname),
+														old: display?.status,
+													}));
+												}}
 												className="bg-transparent px-3 text-primary border border-[#828FA3] rounded-[4px] h-[40px] w-full"
 											>
 												{status?.map((st) => {

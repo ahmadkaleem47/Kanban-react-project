@@ -104,6 +104,7 @@ export const AddEditBoard = ({ show, setShow, edit }) => {
 											})}
 										</div>
 										<button 
+										type="button"
                                         onClick={() => {setCollect({...collect, columns: [...collect?.columns, {}]})}}
                                         className="bg-modal-button w-full h-[40px] rounded-[20px] text-new text-[14px] font-[700]">
 											+ Add New Column

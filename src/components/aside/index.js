@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 import { setTheme, convertToSlug } from "../../helpers";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import { AddBoard } from "../addBoard";
+import { AddEditBoard } from "../addEditBoard";
 
 export const Aside = ({ setVisible, visible, setColor }) => {
 	const location = useLocation();
@@ -18,7 +18,7 @@ export const Aside = ({ setVisible, visible, setColor }) => {
 
 	return (
 		<div>
-			<AddBoard show={show} setShow={setShow} />
+			<AddEditBoard show={show} setShow={setShow} />
 			<aside
 				id="sidebar-multi-level-sidebar"
 				className={`${

@@ -2,27 +2,33 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import iconCross from "../../assets/icon-cross.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { setEditBoard } from "../../redux/bodySlice.ts";
+import { setEditBoard, setNewBoard } from "../../redux/bodySlice.ts";
 import { capitalizeWords, convertToTitleCase } from "../../helpers/index.js";
 import { useLocation } from "react-router-dom";
 
-export const EditBoard = ({ show, setShow }) => {
+export const AddEditBoard = ({ show, setShow, edit }) => {
     const dispatch = useDispatch();
     const {data} = useSelector((store) => store.body);
     const location = useLocation();
     const [collect, setCollect] = useState({});
-    
-    const showData = data?.boards?.filter((board) => {
-        return board?.name === convertToTitleCase(location?.pathname);
-    })?.[0];
 
     useEffect(() => {
+        let showData = {columns: [{}, {}]};
+        if (edit) {
+            showData = data?.boards?.filter((board) => {
+                return board?.name === convertToTitleCase(location?.pathname);
+            })?.[0];
+        }
         setCollect(showData)
-    }, [showData])
+    }, [data?.boards, edit, location?.pathname])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(setEditBoard(collect))
+		if (edit) {
+			dispatch(setEditBoard(collect))
+		} else {
+			dispatch(setNewBoard(collect))
+		}
         setShow(false);
     }
 
@@ -50,7 +56,7 @@ export const EditBoard = ({ show, setShow }) => {
                                     onSubmit={handleSubmit}
                                     className="flex flex-col justify-start gap-[20px] w-[416px] p-[24px]">
 										<h1 className="text-primary text-[18px] font-[700]">
-											Edit Board
+											{edit ? "Edit Board": "Add New Board"}
 										</h1>
 										<div className="flex flex-col gap-2">
 											<label className="text-modal font-bold text-[12px]">
@@ -61,6 +67,7 @@ export const EditBoard = ({ show, setShow }) => {
 													setCollect({ ...collect, name: capitalizeWords(e.target.value) })
 												}
                                                 value={collect?.name || ''}
+												readOnly={edit}
                                                 required
 												className="bg-transparent border border-[#828FA3] rounded-[4px] h-[40px] w-full flex px-3 text-primary items-center"
 											/>
@@ -97,14 +104,14 @@ export const EditBoard = ({ show, setShow }) => {
 											})}
 										</div>
 										<button 
-                                        onClick={() => setCollect({...collect, columns: [...collect?.columns, {}]})}
+                                        onClick={() => {setCollect({...collect, columns: [...collect?.columns, {}]})}}
                                         className="bg-modal-button w-full h-[40px] rounded-[20px] text-new text-[14px] font-[700]">
 											+ Add New Column
 										</button>
 										<button 
                                         type="submit"
                                         className="bg-tab w-full h-[40px] rounded-[20px] text-white text-[14px] font-[700]">
-											+ Save Changes
+											{edit ? "+ Save Changes": "+ Create New Board"}
 										</button>
 									</form>
 								</Dialog.Panel>

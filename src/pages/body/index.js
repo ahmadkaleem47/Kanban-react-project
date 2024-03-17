@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { convertToSlug, convertToTitleCase } from "../../helpers";
 import { ViewTask } from "../../components/viewTask";
 import { useEffect, useRef, useState } from "react";
-import { EditBoard } from "../../components/editBoard";
+import { AddEditBoard } from "../../components/addEditBoard";
 
 export const Body = () => {
 	const { data } = useSelector((store) => store.body);
@@ -34,7 +34,7 @@ export const Body = () => {
 			} z-0`}
 		>
 			<ViewTask ref={popupRef} />
-			<EditBoard show={edit} setShow={setEdit} />
+			<AddEditBoard show={edit} setShow={setEdit} edit={true} />
 			{showData.length !== 0 ? (
 				<div className="flex justify-start items-start p-[40px] gap-[40px] w-[calc(100vw-190px)]">
 					{showData?.map((list, index) => {

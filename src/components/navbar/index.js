@@ -6,7 +6,7 @@ import { useState } from "react";
 import { AddTask } from "../addTask";
 import ellipse from "../../assets/icon-vertical-ellipsis.svg";
 import { DeleteBoard } from "../deleteBoard";
-import { EditBoard } from "../editBoard";
+import { AddEditBoard } from "../addEditBoard";
 
 export const Navbar = ({color}) => {
     const location = useLocation();
@@ -19,7 +19,7 @@ export const Navbar = ({color}) => {
         <div className="flex justify-between items-center bg-aside h-[97px] z-50 w-full">
         <AddTask show={show} setShow={setShow} />
         <DeleteBoard show={del} setShow={setDel} />
-        <EditBoard show={edit} setShow={setEdit} />
+        <AddEditBoard show={edit} setShow={setEdit} edit={true} />
         <div className="flex justify-center items-center">
         {!color ?
 				<img

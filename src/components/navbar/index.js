@@ -17,7 +17,7 @@ export const Navbar = ({color}) => {
 
     return (
         <div className="flex justify-between items-center bg-aside h-[97px] z-50 w-full">
-        <AddEditTask show={show} setShow={setShow} />
+        <AddEditTask show={show} setShow={setShow} edit={false} />
         <DeleteBoard show={del} setShow={setDel} />
         <AddEditBoard show={edit} setShow={setEdit} edit={true} />
         <div className="flex justify-center items-center">

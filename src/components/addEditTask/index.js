@@ -140,7 +140,7 @@ export const AddEditTask = ({ show, setShow, edit }) => {
 												onChange={(e) =>
 													setCollect({ ...collect, status: e.target.value })
 												}
-												readOnly={!!edit}
+												disabled={!!edit}
 												value={collect?.status || ''}
                                                 required
 												className="bg-transparent px-3 text-primary border border-[#828FA3] rounded-[4px] h-[40px] w-full"

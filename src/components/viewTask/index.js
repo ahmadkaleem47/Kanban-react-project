@@ -7,6 +7,7 @@ import { convertToTitleCase } from "../../helpers/index.js";
 import { useLocation } from "react-router-dom/dist/index";
 import { useSelector } from "react-redux";
 import { DeleteBoard } from "../deleteBoard/index.js";
+import { AddEditTask } from "../addEditTask/index.js";
 
 export const ViewTask = forwardRef((props, ref) => {
 	const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export const ViewTask = forwardRef((props, ref) => {
 	const [show, setShow] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [del, setDel] = useState(false);
+    const [edit, setEdit] = useState(false);
 
 	const status = data?.boards
 		?.filter((board) => {
@@ -37,6 +39,7 @@ export const ViewTask = forwardRef((props, ref) => {
 	return (
 		<>
 			<DeleteBoard show={del} setShow={setDel} data={display} />
+            <AddEditTask show={edit} setShow={setEdit} edit={display} />
 			<Transition className="z-50" appear show={show} as={Fragment}>
 				<Dialog
 					as="div"
@@ -67,7 +70,13 @@ export const ViewTask = forwardRef((props, ref) => {
 											</button>
 											{open && (
 												<div className="absolute top-7 -right-5 bg-aside w-[192px] h-[94px] shadow-lg rounded-[8px] flex flex-col justify-between p-[16px]">
-													<button className="text-second text-[16px] font-[500] text-start">
+													<button 
+                                                    onClick={() => {
+                                                        setOpen(false);
+                                                        setShow(false);
+                                                        setEdit(true);
+                                                    }}
+                                                    className="text-second text-[16px] font-[500] text-start">
 														Edit Task
 													</button>
 													<button 

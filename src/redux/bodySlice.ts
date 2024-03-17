@@ -23,6 +23,15 @@ const bodySlice = createSlice({
                 })} :board;
             })}
         },
+        setEditSubtasks: (state: BodyState, {payload}: PayloadAction<any>) => {
+            state.data = {boards:state.data?.boards?.map((board) => {
+                return payload?.title === board?.name ? {...board, columns: board?.columns?.map((col) => {
+                    return col?.name === payload?.data?.status ? {...col, tasks: col?.tasks?.map((task) => {
+                        return task?.title === payload?.data?.title ? payload?.data : task;
+                    })} : col;
+                })} :board;
+            })}
+        },
         setNewBoard: (state: BodyState, {payload}: PayloadAction<any>) => {
             state.data = {boards: [...state.data?.boards, payload]}
         },
@@ -66,5 +75,5 @@ const bodySlice = createSlice({
     }
 })
 
-export const {setData, setSubtasks, setNewBoard, setDeleteBoard, setEditBoard, setIsCompleted, setStatusChange, setDeleteTask} = bodySlice.actions;
+export const {setData, setSubtasks, setEditSubtasks, setNewBoard, setDeleteBoard, setEditBoard, setIsCompleted, setStatusChange, setDeleteTask} = bodySlice.actions;
 export default bodySlice.reducer;

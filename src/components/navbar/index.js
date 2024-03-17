@@ -3,7 +3,7 @@ import logoDark from "../../assets/logo-dark.svg";
 import { useLocation } from "react-router-dom"
 import { convertToTitleCase } from "../../helpers";
 import { useState } from "react";
-import { AddTask } from "../addTask";
+import { AddEditTask } from "../addEditTask";
 import ellipse from "../../assets/icon-vertical-ellipsis.svg";
 import { DeleteBoard } from "../deleteBoard";
 import { AddEditBoard } from "../addEditBoard";
@@ -17,7 +17,7 @@ export const Navbar = ({color}) => {
 
     return (
         <div className="flex justify-between items-center bg-aside h-[97px] z-50 w-full">
-        <AddTask show={show} setShow={setShow} />
+        <AddEditTask show={show} setShow={setShow} />
         <DeleteBoard show={del} setShow={setDel} />
         <AddEditBoard show={edit} setShow={setEdit} edit={true} />
         <div className="flex justify-center items-center">

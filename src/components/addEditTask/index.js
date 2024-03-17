@@ -1,15 +1,25 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import iconCross from "../../assets/icon-cross.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { convertToTitleCase } from "../../helpers";
+import { convertToTitleCase } from "../../helpers/index.js";
 import { useLocation } from "react-router-dom";
-import { setSubtasks } from "../../redux/bodySlice.ts";
+import { setEditSubtasks, setSubtasks } from "../../redux/bodySlice.ts";
 
-export const AddTask = ({ show, setShow }) => {
+export const AddEditTask = ({ show, setShow, edit }) => {
 	const { data } = useSelector((store) => store.body);
 	const location = useLocation();
     const dispatch = useDispatch();
+	const [collect, setCollect] = useState({});
+
+	useEffect(() => {
+		if (edit) {
+			setCollect(edit)
+		} else {
+			setCollect({subtasks: [{}, {}]})
+		}
+	}, [edit])
+
 	const status = data?.boards
 		?.filter((board) => {
 			return convertToTitleCase(location?.pathname) === board?.name;
@@ -18,11 +28,15 @@ export const AddTask = ({ show, setShow }) => {
 			return stat?.name;
 		});
 
-    const [collect, setCollect] = useState({subtasks: [{}, {}]});
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(setSubtasks({title: convertToTitleCase(location?.pathname), data: collect}))
+		if (edit) {
+			dispatch(setEditSubtasks({title: convertToTitleCase(location?.pathname), data: collect}))
+		} else {
+			dispatch(setSubtasks({title: convertToTitleCase(location?.pathname), data: collect}))
+		}
         setShow(false);
     }
 
@@ -50,7 +64,7 @@ export const AddTask = ({ show, setShow }) => {
                                     onSubmit={handleSubmit}
                                     className="flex flex-col justify-start gap-[20px] w-[416px] p-[24px]">
 										<h1 className="text-primary text-[18px] font-[700]">
-											Add New Task
+											{edit ? "Edit Task":"Add New Task"}
 										</h1>
 										<div className="flex flex-col gap-2">
 											<label className="text-modal font-bold text-[12px]">
@@ -60,6 +74,8 @@ export const AddTask = ({ show, setShow }) => {
 												onChange={(e) =>
 													setCollect({ ...collect, title: e.target.value })
 												}
+												readOnly={!!edit}
+												value={collect?.title || ''}
                                                 required
 												className="bg-transparent border border-[#828FA3] rounded-[4px] h-[40px] w-full flex px-3 text-primary items-center"
 											/>
@@ -75,7 +91,7 @@ export const AddTask = ({ show, setShow }) => {
 														description: e.target.value,
 													})
 												}
-                                                required
+												value={collect?.description || ''}
 												className=" bg-transparent border border-[#828FA3] rounded-[4px] resize-none p-3 text-primary w-full h-[112px]"
 											/>
 										</div>
@@ -89,8 +105,9 @@ export const AddTask = ({ show, setShow }) => {
 														{" "}
 														<input
 															onChange={(e) => setCollect({...collect, subtasks: collect?.subtasks?.map((s, i) => {
-                                                                return index === i ? {isCompleted: false, title: e.target.value} : s;
+                                                                return index === i ? {isCompleted: s?.isCompleted ?? false, title: e.target.value} : s;
                                                             })})}
+															value={collect?.subtasks[index]?.title || ''}
                                                             required
 															className="bg-transparent border border-[#828FA3] px-3 text-primary rounded-[4px] w-full h-[40px]"
 														/>
@@ -110,6 +127,7 @@ export const AddTask = ({ show, setShow }) => {
 											})}
 										</div>
 										<button 
+										type="button"
                                         onClick={() => setCollect({...collect, subtasks: [...collect?.subtasks, {}]})}
                                         className="bg-modal-button w-full h-[40px] rounded-[20px] text-new text-[14px] font-[700]">
 											+ Add New SubTask
@@ -122,6 +140,8 @@ export const AddTask = ({ show, setShow }) => {
 												onChange={(e) =>
 													setCollect({ ...collect, status: e.target.value })
 												}
+												readOnly={!!edit}
+												value={collect?.status || ''}
                                                 required
 												className="bg-transparent px-3 text-primary border border-[#828FA3] rounded-[4px] h-[40px] w-full"
 											>
@@ -134,7 +154,7 @@ export const AddTask = ({ show, setShow }) => {
 										<button 
                                         type="submit"
                                         className="bg-tab w-full h-[40px] rounded-[20px] text-white text-[14px] font-[700]">
-											+ Create Task
+											{!!edit ? "Save Changes" : "+ Create Task"}
 										</button>
 									</form>
 								</Dialog.Panel>
